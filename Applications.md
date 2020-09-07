@@ -1,18 +1,42 @@
 # Appications
 
 ## Simple Queue Service (SQS)
+Security – You control who can send messages to and receive messages from an Amazon SQS queue.
+
+Server-side encryption (SSE) lets you transmit sensitive data by protecting the contents of messages in queues using keys managed in AWS Key Management Service (AWS KMS).
+
+Durability – To ensure the safety of your messages, Amazon SQS stores them on multiple servers. Standard queues support at-least-once message delivery, and FIFO queues support exactly-once message processing.
+
+Availability – Amazon SQS uses redundant infrastructure to provide highly-concurrent access to messages and high availability for producing and consuming messages.
+
+Scalability – Amazon SQS can process each buffered request independently, scaling transparently to handle any load increases or spikes without any provisioning instructions.
+
+Reliability – Amazon SQS locks your messages during processing, so that multiple producers can send and multiple consumers can receive messages at the same time.
+
+Customization – Your queues don't have to be exactly alike—for example, you can set a default delay on a queue. You can store the contents of messages larger than 256 KB using Amazon Simple Storage Service (Amazon S3) or Amazon DynamoDB, with Amazon SQS holding a pointer to the Amazon S3 object, or you can split a large message into smaller messages.
+
+Dead-letter queue: dead-letter queues, which other queues (source queues) can target for messages that can't be processed (consumed) successfully. Dead-letter queues are useful for debugging your application or messaging system because they let you isolate problematic messages to determine why their processing doesn't succeed.
 
 ### SQS standard (offers as the default queue type)
 
 - nearly-unlimited number of transactions per second
 - message is delivered at least once (more than one copy of a message might be delivered out of order)
-
+- Use case : - Decouple live user from intensive background
+             - 1 task multiple worker
+             - Batch
     ![Appications/E6E72E5A-C02B-45F4-83ED-E60EE47F331E.jpeg](images/sqs-standard.jpeg)
 
 ### FIFO queue
 
 - message is delivered once (remain until a consumer processes and deletes it)
 - 300 transactions per second
+- Batch : 3000*300*10 messages
+- 5min deduplicate interval
+- FIFO queues don't support per-message delays, only per-queue delays. 
+- If your application can send messages with identical message bodies, you can modify your application to provide a unique message deduplication ID for each sent message.
+
+- If your application sends messages with unique message bodies, you can enable content-based deduplication.
+
 
     ![Appications/7BF7D8EB-09A6-4418-806D-F66A303C57BF.jpeg](images/sqs-fifo.jpeg)
 
